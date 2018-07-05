@@ -50,7 +50,9 @@ mysqlConnection.query('SELECT * from seg_usuario WHERE usu_activo = 1', (err, ro
 
 //Accede a un usuario por ID
 app.get('/security/users/:id', (req, res) => {
-    const query = mysqlConnection.query('SELECT * from seg_usuario WHERE usu_activo = ?')
+    const condition = req.params.id_user;
+    res.send(condition);
+    //const query = mysqlConnection.query('SELECT * from seg_usuario WHERE usu_activo = ?')
 });
 
 app.post('/security/users/', (req, res) => {
