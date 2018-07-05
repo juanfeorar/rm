@@ -73,7 +73,10 @@ app.post('/security/users/', (req, res) => {
 });
 
 app.put('/security/users/', (req, res) => {
-    var query = mysqlConnection.query("UPDATE seg_usuario SET ? WHERE ?",posData, (err, rows, fields) => {
+    
+    const posData = req.body;
+    const condition = {id_user = req.body.id_user}
+    var query = mysqlConnection.query("UPDATE seg_usuario SET ? WHERE ?",[posData, condition], (err, rows, fields) => {
         if(!err){
             res.send('usuario actualizado con éxito');
         }else{
