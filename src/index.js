@@ -39,7 +39,7 @@ mysqlConnection.connect((err)=>{
 //Accede a todo los usuarios
 app.get('/security/users', (req, res) => {
 
-mysqlConnection.query('SELECT * from seg_usuario', (err, rows, fields) => {
+mysqlConnection.query('SELECT * from seg_usuario WHERE usu_activo = 1', (err, rows, fields) => {
         if(!err){
             res.send(rows);
         }else{
@@ -75,7 +75,7 @@ app.post('/security/users/', (req, res) => {
 app.put('/security/users/', (req, res) => {
     
     const posData = req.body;
-    const condition = {id_user = req.body.id_user}
+    const condition = {id_user: req.body.id_user}
     var query = mysqlConnection.query("UPDATE seg_usuario SET ? WHERE ?",[posData, condition], (err, rows, fields) => {
         if(!err){
             res.send('usuario actualizado con éxito');
@@ -86,8 +86,17 @@ app.put('/security/users/', (req, res) => {
     });
 });
 
-app.delete('/security/users/:id', (req, res) => {
-    
+app.delete('/security/users/', (req, res) => {
+    const posData = req.body;
+    const condition = {id_user: req.body.id_user}
+    var query = mysqlConnection.query("UPDATE seg_usuario SET ? WHERE ?",[posData,condition],(err,rows,fields) => {
+        if(!err){
+            res.send('usuario eliminado con éxito');
+        }else{
+            console.log(err);
+        }
+        console.log(query.sql);
+    })
 });
 
 module.exports = {
